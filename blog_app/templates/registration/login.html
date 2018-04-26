@@ -1,0 +1,21 @@
+
+{% extends "blog_app/base.html" %}
+
+{% load staticfiles %}
+{% block content %}
+
+<div class="jumbotron">
+
+<form action="{% url 'login' %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+
+  <input type="submit" class="btn btn-primary" value="login">
+
+  <p><br>You are not a member? Signup <a href="{% url 'register' %}">Here</a></p>
+</form>
+
+</div>
+
+{% endblock %}

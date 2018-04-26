@@ -1,0 +1,91 @@
+{% extends "blog_app/base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h1 class="triptitle loader">{{ trip.title }}</h1>
+    {% if user.is_authenticated and user.id == trip.bloggerid.id %}
+      {% if not trip.publish_date %}
+        <a class="btn btn-default" href="{% url 'trip_publish' pk=trip.pk %}">Publish</a>
+      {% endif %}
+    {% endif %}
+    <div class"date tripdate">
+       <p class="date">Created on: {{ trip.date|date:'d-m-y' }}</p>
+    </div>
+
+    <p class='tripcontent'>{{ trip.details|safe|linebreaksbr }}</p>
+    {% if user.is_authenticated %}
+      {% if user.id == trip.bloggerid.id %}
+
+        <a class='btn btn-primary' href="{% url 'trip_edit' pk=trip.pk %}">
+          <i class="fa fa-pencil" aria-hidden="true"></i>      </a>
+        <a class='btn btn-primary' href="{% url 'trip_remove' pk=trip.pk %}">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+      {% endif %}
+    {% endif %}
+
+    <hr>
+    <a class='btn btn-primary btn-comment mt-4 toggleForm' href="{% url 'AddCommentToTrip' pk=trip.pk %}">Add Comment</a>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+
+    <div class="container">
+ {% for key,value in comments.items %}
+   {% if user.is_authenticated and value.approved == False and user.id == trip.bloggerid.id %}
+    <div>
+      <p> <br>{{ value.date }}</p>
+      <p>{{value.comment|safe|linebreaks}}</p>
+    </div>
+    {% if user.id == trip.bloggerid.id %}
+      <a class="btn btn-default" href="{% url 'comment_approve' pk=value.pk %}">
+        <i class="fa fa-checCk" aria-hidden="true"></i><br>
+      </a>
+      {% if user.id != value.bloggerid.id %}
+        <a class="btn btn-default" href="{% url 'comment_remove' pk=value.pk %}">
+          <i class="fa fa-times" aria-hidden="true"></i><br>
+        </a>
+      {% endif %}
+    {% endif %}
+
+    {% if user.id == value.bloggerid.id %}
+     <a class="btn btn-default" href="{% url 'comment_remove' pk=value.pk %}">
+       <i class="fa fa-times" aria-hidden="true"></i><br>
+     </a>
+     <a class="btn btn-primary" href="{% url 'comment_edit' pk=value.pk %}">
+       <i class="fa fa-pencil" aria-hidden="true"></i>
+     </a>
+    {% endif %}
+   {% endif %}
+   {% empty %}
+    <p>No Comments!</p>
+ {% endfor %}
+
+ {% for key,value in comments.items %}
+   {% if value.approved == True %}
+    <div>
+      <p> <br>{{ value.date }}</p>
+      <p>{{value.comment|safe|linebreaks}}</p>
+    </div>
+
+      {% if user.id == trip.bloggerid.id or user.id == value.bloggerid.id %}
+      <a class="btn btn-default" href="{% url 'comment_remove' pk=value.pk %}">
+        <i class="fa fa-times" aria-hidden="true"></i><br>
+      </a>
+      {% endif %}
+
+    {% if user.id == value.bloggerid.id %}
+     <a class="btn btn-primary" href="{% url 'comment_edit' pk=value.pk %}">
+       <i class="fa fa-pencil" aria-hidden="true"></i>
+     </a>
+    {% endif %}
+   {% endif %}
+ {% endfor %}
+
+</div>
+  </div>
+</div>
+{% endblock %}

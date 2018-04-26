@@ -1,0 +1,19 @@
+{% extends "blog_app/base.html" %}
+{% block content %}
+<div class="centerstage row">
+  <div class="col-12">
+    {% for trip in trip_list %}
+    <div class="trip">
+      <!-- If you are able to click on trip.title
+       it will take you to trip_detail where
+       the primary key=trip.pk where trip is being returned for triip in trip_list -->
+      <h1><a href="{% url 'trip_detail' pk=trip.pk %}">{{ trip.title }}</a></h1>
+      <div class="date">
+        <p>Published on: {{ trip.publish_date |date:"D M Y" }}</p>
+      </div>
+      <a href="{% url 'trip_detail' pk=trip.pk %}">Comments: {{ trip.approve_comments.count }}</a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

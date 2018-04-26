@@ -1,0 +1,11 @@
+{% extends "blog_app/base.html" %}
+{% block content %}
+<div class="row loader">
+  <div class="col-12">
+    <h3>Username:  {{ user.username }} </h3>
+    <h3>Email: {{ user.email }} </h3>
+    <h3>Full Name: {{ user.first_name }} {{ user.last_name }}</h3>
+    <a href="{% url 'update_account' pk=user.pk %}" class="btn btn-info" role="button">Edit Profile</a>
+  </div>
+</div>
+{% endblock %}

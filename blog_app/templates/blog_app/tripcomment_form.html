@@ -1,0 +1,15 @@
+{% extends "blog_app/base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <h1>New Comment</h1>
+    <form class="trip-form" id="commentForm" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="save btn btn-default">Trip Comment</button>
+    </form>
+
+    <script>var editor = new MediumEditor('.editable');</script>
+  </div>
+</div>
+{% endblock %}

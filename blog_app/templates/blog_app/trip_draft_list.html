@@ -1,0 +1,17 @@
+{% extends "blog_app/base.html" %}
+{% block content %}
+  {% for key,value in trips.items %}
+      <div class="row">
+        <div class="col-12">
+          <div class="trip">
+            <p class="date">Created on: {{ value.date|date:'d-m-y' }} <br>
+            by: {{ user.username }}</p>
+
+            <h1><a href="{% url 'trip_detail' pk=value.pk %}">{{ value.title }}</a></h1>
+            <p>{{ value.text|truncatechars:200 }}</p>
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+  <p></p>
+{% endblock %}
